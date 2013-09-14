@@ -1,0 +1,63 @@
+{% extends "adminlayout.html" %}
+{% block title %}
+Htmls
+{% end %}
+{% block content %}
+<h4> Htmls </h4>
+{% if htmls %}
+<table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Source</th>
+                  <th>PreView</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for h in htmls %}
+                  <tr>
+                  <td>
+                  <form action="/list/html" method="post">
+                   {% module xsrf_form_html() %}
+                    <input type="hidden" name="action"  value="delete">
+                  	 <input type="hidden" name="id"  value="{{ h["id"] }}">
+                  	 <button class="btn btn-warning" type="submit">Delete</button>
+                   </form>
+                  </td>
+                  <td>
+                  <form action="/list/html" method="post">
+                  {% module xsrf_form_html() %}
+                  <textarea style="height:200px;width:300px;" name="content" value="">{{ h["content"] }}</textarea>
+                  <label class="select">status：
+				<select name="status">
+				{% if h["status"]==1 %}
+				<option value="1" selected="selected">display on HomePage</option>
+				<option value="0">No display on HomePage</option>
+				{% else %}
+				<option value="1">display on HomePage</option>
+				<option value="0" selected="selected">No display on HomePage</option>
+				{% end %}
+				</select></label>
+                  <button class="btn btn-primary" type="submit">Submit</button>
+                  <input type="hidden" name="action"  value="edit">
+                  <input type="hidden" name="id"  value="{{ h["id"] }}">
+                  </form>
+                  </td>
+                  <td>{% raw h["content"] %}</td>
+                  </tr>
+                  {% end %}
+                  </tbody>
+                  </table>
+{% else %}
+<p>No Htmls </p>
+{% end %}
+<div id="add">
+<form  action="/list/html" method="post" />
+{% module xsrf_form_html() %}
+<p>New Html:</p>
+<textarea style="height:200px;width:300px;" name="content" value=""></textarea><br/>
+<button class="btn btn-primary" type="submit">Submit</button>
+<input type="hidden" name="action"  value="new">
+</form>
+</div>
+{% end %}

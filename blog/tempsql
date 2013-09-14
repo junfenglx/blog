@@ -1,0 +1,87 @@
+INSERT INTO  `posts` (  `author_id` ,  `category_id` ,  `title` ,  `content` ,  `publish_date` , `publish_gmt` ,  `update_date` ,  `update_gmt` ,  `post_status` ,  `comment_status` ,  `visibility` , `comment_count` ,  `post_password` ,  `view_count` ) 
+SELECT  `post_author` , 1,  `post_title` ,  `post_content` ,  `post_date` ,  `post_date_gmt` , `post_modified` ,  `post_modified_gmt` , 1, 1, 1,  `comment_count` ,  `post_password` , 0
+FROM  `wpblog`.`wp_posts` 
+WHERE  `wpblog`.`wp_posts`.`post_status` =  "publish";
+
+
+
+INSERT INTO  `tags` (  `tag_name` ,  `tag_count` ) 
+SELECT  `name` , 0
+FROM wpblog.wp_terms, wpblog.wp_term_taxonomy
+WHERE wpblog.wp_term_taxonomy.term_id = wpblog.wp_terms.term_id
+AND wpblog.wp_term_taxonomy.taxonomy =  "post_tag"
+
+
+
+
+
+UPDATE tags SET tag_count = ( SELECT c
+FROM (
+
+SELECT tag_id, COUNT( * ) AS c
+FROM  `post_tag` 
+GROUP BY  `post_tag`.`tag_id` ) temp
+WHERE temp.tag_id = tags.tag_id
+)
+
+
+
+UPDATE  `posts` SET blog.posts.category_id = ( SELECT temp2.id
+FROM (
+
+SELECT post_id, blog.categories.category_id AS id
+FROM blog.posts, blog.categories, (
+
+SELECT name, post_title
+FROM wpblog.wp_term_relationships, wpblog.wp_term_taxonomy, wpblog.wp_terms, wpblog.wp_posts
+WHERE wpblog.wp_term_relationships.object_id = wpblog.wp_posts.ID
+AND wpblog.wp_term_relationships.term_taxonomy_id = wpblog.wp_term_taxonomy.term_taxonomy_id
+AND wpblog.wp_term_taxonomy.taxonomy =  "category"
+AND wpblog.wp_term_taxonomy.term_id = wpblog.wp_terms.term_id
+)temp
+WHERE blog.posts.title = temp.post_title
+AND blog.categories.category_name = temp.name ) temp2
+WHERE temp2.post_id = blog.posts.post_id
+)
+
+
+
+INSERT INTO blog.post_tag(post_id,tag_id)SELECT post_id,tag_id
+FROM blog.posts, blog.tags, (
+
+SELECT name, post_title
+FROM wpblog.wp_term_relationships, wpblog.wp_term_taxonomy, wpblog.wp_terms, wpblog.wp_posts
+WHERE wpblog.wp_term_relationships.object_id = wpblog.wp_posts.ID
+AND wpblog.wp_term_relationships.term_taxonomy_id = wpblog.wp_term_taxonomy.term_taxonomy_id
+AND wpblog.wp_term_taxonomy.taxonomy =  "category"
+AND wpblog.wp_term_taxonomy.term_id = wpblog.wp_terms.term_id
+)temp
+WHERE blog.posts.title = temp.post_title
+AND blog.tags.tag_name = temp.name;
+
+
+
+
+
+
+INSERT INTO  `comments` (  `comment_post_id` ,  `author_id` ,  `comment_author` ,  `comment_author_email` , `comment_author_url` ,  `comment_author_ip` ,  `comment_date` ,  `comment_gmt` ,  `comment_content` , `comment_status` ,  `comment_agent` ,  `comment_parent` ) (
+
+SELECT posts.post_id, user_id, comment_author, comment_author_email, comment_author_url, comment_author_IP, comment_date, comment_date_gmt, comment_content, comment_approved, comment_agent, comment_parent
+FROM (
+
+SELECT post_title, comment_author, comment_author_email, comment_author_url, comment_author_IP, comment_date, comment_date_gmt, comment_content, comment_approved, comment_agent, comment_parent, user_id
+FROM wpblog.wp_comments, wpblog.wp_posts
+WHERE wpblog.wp_posts.ID = wpblog.wp_comments.comment_post_ID
+AND wpblog.wp_comments.comment_approved =1
+)temp, posts
+WHERE temp.post_title = posts.title
+)
+
+
+
+
+CREATE TABLE htmls(
+id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+content VARCHAR( 1000 ) NOT NULL ,
+STATUS BOOLEAN NOT NULL
+)

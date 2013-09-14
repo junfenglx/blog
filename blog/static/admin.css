@@ -1,0 +1,18 @@
+#admin {
+margin-top:50px;
+}
+#toolbox > .dropdown-menu
+{
+    top:7%;
+
+    display:block;
+}
+#content {
+    font-size: 17px;
+    line-height: 22px;
+
+}
+.comment_status {
+    float:left;
+    margin-right:10px;
+}

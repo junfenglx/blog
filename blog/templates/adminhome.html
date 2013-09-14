@@ -1,0 +1,43 @@
+{% extends "adminlayout.html" %}
+{% block title %}
+Dashboard
+{% end %}
+{% block content %}
+<h4><i class="icon-home"></i> Dashboard</h4>
+
+<table class="table">
+<tr>
+<td>
+<a href="/list/post">{{ post_count }} Posts</a>
+</td>
+<td>
+<a href="/list/comment?comment_status=approved">{{ approved_count }} Approved Comment(s)</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="/list/html">{{ html_count }} HTML(s)</a>
+</td>
+<td>
+<a href="/list/comment?comment_status=pending">{{ pending_count }} Pending Comment(s)</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="/list/category">{{ category_count }} Categories</a>
+</td>
+<td>
+<a href="/list/comment?comment_status=spam">{{ spam_count }} Spam Comment(s)</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="/list/tag">{{ tag_count }} Tags</a>
+</td>
+<td>
+<a href="/list/comment?comment_status=trash">{{ trash_count }} Trash Comment(s)</a>
+</td>
+</tr>
+</table>
+<div id="next">
+{% end %}

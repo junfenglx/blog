@@ -1,0 +1,44 @@
+{% extends "adminlayout.html" %}
+{% block title %}
+Tags
+{% end %}
+{% block content %}
+<h4> Tags </h4>
+{% if tags %}
+<table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>tag_id</th>
+                  <th>tag_name</th>
+                  <th>tag_count</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for t in tags %}
+                  <tr>
+                  <td>{{ t["tag_id"] }}</td>
+                  <td><a href="/tag?name={{ t["tag_name"] }}">{{ t["tag_name"] }}</a></td>
+                  <td>{{ t["tag_count"] }}</td>
+                  </tr>
+                  {% end %}
+                  </tbody>
+                  </table>
+
+{% if tags_count%10==0 %}
+            {% set page_count=tags_count/10 %}
+            {% else %}
+            {% set page_count=tags_count/10+1 %}
+            {% end %}
+    <div class="tablenav-pages"><span class="displaying-num">{{ tags_count }} items</span>
+<span class="pagination-links">
+<a class="first-page" title="Go to the first page" href="/list/tag">«</a>
+<a class="prev-page" title="Go to the previous page" href="/list/tag?paged={% if p>1 %}{{ p-1 }}{% else %}1{% end %}">‹</a>
+<span class="paging-input">{{ p }} of <span class="total-pages">{{ page_count }}</span></span>
+<a class="next-page" title="Go to the next page" href="/list/tag?paged={% if p<page_count %}{{ p+1 }}{% else %}{{ page_count }}{% end %}">›</a>
+<a class="last-page" title="Go to the last page" href="/list/tag?paged={{ page_count }}">»</a></span></div>        
+
+{% else %}
+<p>No Tags </p>
+{% end %}
+
+{% end %}

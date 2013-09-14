@@ -1,0 +1,77 @@
+{% extends "adminlayout.html" %}
+{% block title %}
+EditPost
+{% end %}
+{% block head %}
+<link rel="stylesheet" href="{{ static_url("admin.css") }}" type="text/css"/>
+<script type="text/javascript" charset="utf-8">
+        window.UEDITOR_HOME_URL = "{{ static_url("ueditor/") }}";
+    </script> 
+<script type="text/javascript" charset="utf-8" src="{{ static_url("ueditor/ueditor_config.js") }}"></script>
+<script type="text/javascript" charset="utf-8" src="{{ static_url("ueditor/ueditor_all.min.js") }}"></script>
+<link rel="stylesheet" type="text/css" href="{{ static_url("ueditor/themes/default/css/ueditor.css") }}"/>  
+{% end %}
+{% block content %}
+<h3>Edit Post</h3>
+<form action="/edit/post" method="post" class="form-horizontal">
+{% module xsrf_form_html() %}
+<label>Title:
+<input type="text" class="input-xxlarge" name="title" value={{ title }}>
+</label>
+<br/>
+<textarea name="content" id="myEditor">{{ content }}</textarea>
+<br/>
+
+{% if categories %}
+<label class="select">Category：
+<select name="category">
+{% for c in categories %}
+<option value="{{ c["category_id"] }}" {% if c["category_id"]==category_id %}selected="selected"{% end %}>{{ c["category_name"] }}</option>
+{% end %}
+</select></label>
+{% end %}
+
+<label>Tags:
+<input type="text" name="tags"  value={{ ','.join(tags) }}>
+</label>
+
+<label class="select">Post_status：
+<select name="post_status">
+{% for ps in post_status.keys() %}
+<option value="{{ post_status[ps] }}" {% if post_status[ps]==status_id %}selected="selected"{% end %}>{{ ps }}</option>
+{% end %}
+</select></label>
+
+<label class="select">Visibility:
+<select name="visibility">
+{% for v in visibility.keys() %}
+<option value="{{ visibility[v] }}" {% if visibility[v]==visibility_id %}selected="selected"{% end %}>{{ v }}</option>
+{% end %}
+</select>
+</label>
+
+<label>Password:
+<input type="password" name="password" placeholder="Password" value={{ passwd }}>
+</label>
+
+<label class="select">Comment_status:
+<select name="comment_status">
+{% if comment_status %}
+<option value="1" selected="selected">Open</option>
+<option value="0">Close</option>
+{% else %}
+<option value="1">Open</option>
+<option value="0" selected="selected">Close</option>
+{% end %}
+</select>
+</label>
+
+<input type="submit" name="submit" value="Post">
+<input type="hidden" name="post_id" value="{{ post_id }}">
+</form>
+<script>
+    var ue=new UE.ui.Editor();
+    ue.render('myEditor');
+</script>
+
+{% end %}

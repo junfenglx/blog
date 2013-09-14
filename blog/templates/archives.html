@@ -1,0 +1,58 @@
+{% extends "userlayout.html" %}
+{% block title %}{{ entry["title"] }}{% end %}
+{% block main %}
+<article id="post-{{ entry["post_id"] }}" class="post-{{ entry["post_id"] }} post type-post status-publish format-standard hentry category-feeling [tag-72]">
+				<header class="entry-header">
+									<h1 class="entry-title">
+				<a href="/archives/{{ entry["post_id"] }}" title="Permalink to {{ entry["title"] }}" rel="bookmark">{{ entry["title"] }}</a>
+			</h1>
+										<div class="comments-link">
+					<a href="/archives/{{ entry["post_id"] }}#respond" title="Comment on {{ entry["title"] }}"><span class="leave-reply">Leave a reply</span></a>				</div><!-- .comments-link -->
+					</header><!-- .entry-header -->
+
+				<div class="entry-content">
+				{% if entry["content"][0:23]=='<style type="text/css">' %}
+				{% raw entry["content"] %}
+				{% else %}
+				<p>
+				{% raw entry["content"].replace("\n","</p><p>") %}
+				</p>
+				{% end %}
+					</div><!-- .entry-content -->
+		
+		<footer class="entry-meta">
+			This entry was posted in <a href="/category/{{ entry["category_id"] }}" title="View all posts in {{ entry["category_name"] }}" rel="category">{{ entry["category_name"] }}</a> 
+			and tagged <a href="/tag/{{ entry["tag_id"] }}" rel="tag">{{ entry["tag_name"] }}</a> on <a href="/archive/{{ entry["post_id"] }}" title="{{ entry["publish_date"] }}" rel="bookmark">
+			<time class="entry-date" datetime="{{ entry["publish_date"] }}">{{ entry["publish_date"] }}</time></a>
+			<span class="by-author"> by <span class="author vcard"><a class="url fn n" href="/author/{{ entry["author_id"] }}" title="View all posts by {{ entry["nickname"] }}" rel="author">{{ entry["nickname"] }}</a></span></span>.
+			<span class="edit-link"><a class="post-edit-link" href="/admin/edit?post={{ entry["post_id"] }}&action=edit" title="Edit Post">Edit</a></span>					
+		    </footer><!-- .entry-meta -->
+	</article> <!-- #post -->
+	<nav class="nav-single">
+					<h3 class="assistive-text">Post navigation</h3>
+					{% if previous %}
+					<span class="nav-previous"><a href="/archives/{{ previous["post_id"] }}" rel="prev"><span class="meta-nav">←</span> {{ previous["title"] }} </a></span>
+					{% end %}
+					{% if next %}
+					<span class="nav-next"><a href="/archives/{{ next["post_id"] }}" rel="next"> {{ next["title"] }} <span class="meta-nav">→</span></a></span>
+					{% end %}
+				</nav>	<!-- .nav-single -->
+	
+	
+	
+	<div id="comments" class="comments-area">
+	{% if entry_comments %}
+	<h2 class="comments-title">
+			{{ entry["comment_count"] }} thought on “<span>{{ entry["title"] }}</span>”		</h2>
+
+			{% module Template("comments.html",entry=entry,parentID=0,entry_comments=entry_comments,depth=1,gravatar_url=gravatar_url,count=0) %}
+	{% end %}
+	
+
+		
+		
+	
+	{% include respond.html %}
+						
+</div><!-- #comments .comments-area -->
+{% end %}

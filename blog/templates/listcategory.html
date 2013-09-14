@@ -1,0 +1,38 @@
+{% extends "adminlayout.html" %}
+{% block title %}
+Categories
+{% end %}
+{% block content %}
+<h4> Categories </h4>
+{% if categories %}
+<table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>category_id</th>
+                  <th>category_name</th>
+                  <th>category_count</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for c in categories %}
+                  <tr>
+                  <td>{{ c["category_id"] }}</td>
+                  <td><a href="/category?name={{ c["category_name"] }}">{{ c["category_name"] }}</a></td>
+                  <td>{{ c["category_count"] }}</td>
+                  </tr>
+                  {% end %}
+                  </tbody>
+                  </table>
+{% else %}
+<p>No Tags </p>
+{% end %}
+<form class="form-inline" action="/list/category" method="post">
+{% module xsrf_form_html() %}
+<p>New Category:</p>
+<label>Category_Name:
+<input type="text" name="category"  value="">
+</label>
+<button class="btn btn-primary" type="submit">Submit</button>
+<input type="hidden" name="action"  value="new">
+</form>
+{% end %}

@@ -1,0 +1,49 @@
+{% extends "adminlayout.html" %}
+{% block title %}
+Posts
+{% end %}
+{% block content %}
+<h4> Posts </h4>
+<div id="post_status">{{ post_status }}</div>
+{% if posts %}
+<table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Author</th>
+                  <th>Category</th>
+                  <th>Tags</th>
+                  <th>Comment_count</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for a in posts %}
+                <tr>
+                  <td><a href="/edit/post?post={{ a["post_id"] }}" title="Edit {{ a["title"] }}">{{ a["title"] }}</a></td>
+                  <td>{{ a["nickname"] }}</td>
+                  <td>{{ a["category_name"] }}</td>
+                  <td>{% if tags[a["post_id"]] %}{% for t in tags[a["post_id"]] %} {{ t["tag_name"] }},{% end %}{% else %}---{% end %}</td>
+                  <td>{{ a["comment_count"] }}</td>
+                  <td>{{ a["publish_date"] }}</td>
+                </tr>
+                {% end %}
+              </tbody>
+            </table>
+            {% if post_count%10==0 %}
+            {% set page_count=post_count/10 %}
+            {% else %}
+            {% set page_count=post_count/10+1 %}
+            {% end %}
+    <div class="tablenav-pages"><span class="displaying-num">{{ post_count }} items</span>
+<span class="pagination-links">
+<a class="first-page" title="Go to the first page" href="/list/post?post_status={{ post_status }}">«</a>
+<a class="prev-page" title="Go to the previous page" href="/list/post?post_status={{ post_status }}&paged={% if p>1 %}{{ p-1 }}{% else %}1{% end %}">‹</a>
+<span class="paging-input">{{ p }} of <span class="total-pages">{{ page_count }}</span></span>
+<a class="next-page" title="Go to the next page" href="/list/post?post_status={{ post_status }}&paged={% if p<page_count %}{{ p+1 }}{% else %}{{ page_count }}{% end %}">›</a>
+<a class="last-page" title="Go to the last page" href="/list/post?post_status={{ post_status }}&paged={{ page_count }}">»</a></span></div>        
+
+{% else %}
+<p>No {{ post_status }} Post </p>
+            {% end %}
+{% end %}

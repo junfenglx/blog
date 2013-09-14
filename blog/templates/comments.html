@@ -1,0 +1,46 @@
+{% if parentID==0 %}
+<ol class="commentlist">
+{% else %}
+<ol class="children">
+{% end %}
+
+{% for ec in entry_comments %}
+{% if parentID==ec["comment_parent"] %}
+{% if count%2==0 %}
+<li class="comment even depth-{{ depth }}" id="li-comment-{{ ec["comment_id"] }}">
+{% else %}
+<li class="comment odd depth-{{ depth }}" id="li-comment-{{ ec["comment_id"] }}">
+{% end %}
+		<article id="comment-{{ ec["comment_id"] }}" class="comment">
+			<header class="comment-meta comment-author vcard">
+				<img alt="" src="{{ gravatar_url(ec["comment_author_email"]) }}" class="avatar avatar-44 photo" height="44" width="44">
+				
+				<cite class="fn">
+				{% if ec["comment_author_url"] %}
+				<a href="{{ ec["comment_author_url"] }}" rel="external nofollow" class="url">{{ ec["comment_author"] }}</a>
+				{% else %}
+				{{ ec["comment_author"] }}
+				{% end %}
+				</cite>
+				
+				<a href="/archives/{{ entry["post_id"] }}#comment-{{ ec["comment_id"] }}">
+				<time datetime="{{ ec["comment_date"] }}">{{ ec["comment_date"] }}</time></a>
+			    </header><!-- .comment-meta -->
+
+			
+			<section class="comment-content comment">
+				<p>{{ ec["comment_content"] }}</p>
+			    </section><!-- .comment-content -->
+
+			<div class="reply">
+				<a class="comment-reply-link" href="/archives/{{ entry["post_id"] }}?replyto={{ ec["comment_id"] }}#respond" >Reply</a> <span>↓</span>
+			    </div><!-- .reply -->
+		    </article><!-- #comment-## -->
+		
+
+{% module Template("comments.html",entry=entry,parentID=ec["comment_id"],entry_comments=entry_comments,depth=depth+1,gravatar_url=gravatar_url,count=count) %}
+{% end %}
+
+{% end %}
+</li>
+</ol>

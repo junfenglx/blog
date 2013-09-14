@@ -1,0 +1,16 @@
+{% extends "userlayout.html" %}
+{% block title %}Search:{{ s }}{% end %}
+{% block main %}
+{% if s %}
+<header class="page-header">
+    <h1 class="page-title">Search Results for: <span>{{ s }}</span></h1>
+</header>
+{% end %}
+{% if search_entries %}
+{% for se in search_entries %}
+<li><a class="search_url" href="/archives/{{ se["post_id"] }}" title="{{ se["title"] }}">{{ se["title"] }}</a></li>
+{% end %}
+{% else %}
+<p>No post for your search "{{ s }}"</p>
+{% end %}
+{% end %}

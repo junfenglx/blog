@@ -1,0 +1,14 @@
+{% extends "userlayout.html" %}
+{% block title %}Tag:{{ tag_name }}{% end %}
+{% block main %}
+<header class="archive-header">
+    <h1 class="archive-title">Tag: <span>{{ tag_name }}</span></h1>
+</header>
+{% if tag_entries %}
+{% for te in tag_entries %}
+<li><a class="tag_url" href="/archives/{{ te["post_id"] }}" title="{{ te["title"] }}">{{ te["title"] }}</a></li>
+{% end %}
+{% else %}
+<p>No post</p>
+{% end %}
+{% end %}

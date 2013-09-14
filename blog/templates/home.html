@@ -1,0 +1,43 @@
+{% extends "userlayout.html" %}
+{% block title %}Home{% end %}
+{% block main %}
+{% if entries %}
+{% for e in entries %}
+<article id="post-{{ e["post_id"] }}" class="post-{{ e["post_id"] }} post type-post status-publish format-standard hentry category-feeling [tag-72]">
+				<header class="entry-header">
+									<h1 class="entry-title">
+				<a href="/archives/{{ e["post_id"] }}" title="Permalink to {{ e["title"] }}" rel="bookmark">{{ e["title"] }}</a>
+			</h1>
+										<div class="comments-link">
+					<a href="/archives/{{ e["post_id"] }}#respond" title="Comment on {{ e["title"] }}"><span class="leave-reply">Leave a reply</span></a>				</div><!-- .comments-link -->
+					</header><!-- .entry-header -->
+
+				<div class="entry-content">
+				{% if e["content"][0:23]=='<style type="text/css">' %}
+				{% raw e["content"] %}
+				{% else %}
+				<p>
+				{% raw e["content"].replace("\n","</p><p>") %}
+				</p>
+				{% end %}
+				
+					</div><!-- .entry-content -->
+		
+		<footer class="entry-meta">
+			This entry was posted in <a href="/category/{{ e["category_id"] }}" title="View all posts in {{ e["category_name"] }}" rel="category">{{ e["category_name"] }}</a> 
+			and tagged <a href="/tag/{{ e["tag_id"] }}" rel="tag">{{ e["tag_name"] }}</a> on <a href="/archive/{{ e["post_id"] }}" title="{{ e["publish_date"] }}" rel="bookmark">
+			<time class="entry-date" datetime="{{ e["publish_date"] }}">{{ e["publish_date"] }}</time></a>
+			<span class="by-author"> by <span class="author vcard"><a class="url fn n" href="/author/{{ e["author_id"] }}" title="View all posts by {{ e["nickname"] }}" rel="author">{{ e["nickname"] }}</a></span></span>.
+			<span class="edit-link"><a class="post-edit-link" href="/admin/edit?post={{ e["post_id"] }}&action=edit" title="Edit Post">Edit</a></span>					
+		    </footer><!-- .entry-meta -->
+	</article>
+{% end %}
+<nav id="nav-below" class="navigation" role="navigation">
+			<h3 class="assistive-text">Post navigation</h3>
+			<div class="nav-previous alignleft"><a href="/?paged={{ p+1 }}"><span class="meta-nav">←</span> Older posts</a></div>
+			<div class="nav-next alignright">{% if p>1 %}<a href="/?paged={{ p-1 }}">Newer posts <span class="meta-nav">→{% end %}</span></a></div>
+		</nav>
+{% end %}
+{% end %}
+
+

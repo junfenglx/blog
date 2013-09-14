@@ -1,0 +1,32 @@
+{% extends "userlayout.html" %}
+{% block title %}{{ page_entry["title"] }}{% end %}
+{% block main %}
+
+<article id="post-{{ page_entry["post_id"] }}" class="post-{{ page_entry["post_id"] }} page type-page status-publish hentry">
+		<header class="entry-header">
+			<h1 class="entry-title"> {{ page_entry["title"] }} </h1>
+		</header>
+
+		<div class="entry-content">
+			{% raw page_entry["content"] %}
+					</div><!-- .entry-content -->
+		<footer class="entry-meta">
+					</footer><!-- .entry-meta -->
+	</article>
+
+<div id="comments" class="comments-area">
+	{% if page_comments %}
+	<h2 class="comments-title">
+			{{ page_entry["comment_count"] }} thought on “<span>{{ page_entry["title"] }}</span>”		</h2>
+
+			{% module Template("comments.html",entry=page_entry,parentID=0,entry_comments=page_comments,depth=1,gravatar_url=gravatar_url,count=0) %}
+	{% end %}
+	
+
+		
+		{% module Template("respond.html",entry=page_entry,parent=0) %}
+	
+			
+						
+</div><!-- #comments .comments-area -->
+{% end %}

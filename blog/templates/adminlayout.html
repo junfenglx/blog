@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard
+{% end %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ static_url("admin.css") }}" type="text/css"/>
+
+{% end %}
+
+
+{% block body %}
+{% set role=dict(admin=1,writer=2) %}
+<div id="admin">
+<div id="toolbox">
+      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel"> 
+  	  <li class="dropdown-submenu">
+          <a tabindex="-1" href="/list/post">Posts</a>
+           <ul class="dropdown-menu">
+               <li class="dropdown-submenu">
+                <a tabindex="-1" href="/list/post">Posts</a>
+                </li>
+                <li class="dropdown-submenu">
+                <a tabindex="-1" href="/edit/post">New post</a>
+                </li>
+                {% if current_user["role"]==role["admin"] %}
+                <li class="dropdown-submenu">
+                <a tabindex="-1" href="/list/tag">Tags</a>
+                </li>
+                <li class="dropdown-submenu">
+                <a tabindex="-1" href="/list/category">Categories</a>
+                </li>
+                {% end %}
+            </ul>
+         </li>
+         {% if current_user["role"]==role["admin"] %}
+         <li class="dropdown-submenu">
+          <a tabindex="-1" href="/list/comment">Comments</a>
+         </li>
+         {% end %}
+         <li class="dropdown-submenu">
+           <a tabindex="-1" href="/edit/author&author={{ current_user["author_id"] }}"> Author </a>
+             <ul class="dropdown-menu">
+               <li class="dropdown-submenu">
+                <a tabindex="-1" href="/edit/author&author={{ current_user["author_id"] }}">Your Profile</a>
+                </li>
+                {% if current_user["role"]==role["admin"] %}
+                <li class="dropdown-submenu">
+                <a tabindex="-1" href="/edit/author">New Author</a>
+                </li>
+                <li class="dropdown-submenu">
+                <a tabindex="-1" href="/list/author">All Authors</a>
+                </li>
+                {% end %}
+             </ul>
+         </li>
+         {% if current_user["role"]==role["admin"] %}
+         <li class="dropdown-submenu">
+          <a tabindex="-1" href="/list/html">Htmls</a>
+           <ul class="dropdown-menu">
+               <li class="dropdown-submenu">
+                <a tabindex="-1" href="/list/html">All Htmls</a>
+                </li>
+                
+                <li class="dropdown-submenu">
+                <a tabindex="-1" href="/list/html#add">Add Html</a>
+                </li>
+                
+            </ul>
+         </li>
+         <li class="dropdown-submenu">
+         <a tabindex="-1" href="/admin/settings"> Settings </a>
+         </li>
+         {% end %}
+         
+  
+</ul>
+</div><!-- #toolbox-## -->
+<div class="container-fluid">
+<div class="row-fluid">
+    <div class="span2">
+
+</div>
+
+<div class="span10">
+<div id="content">
+{% block content %}
+{% end %}
+</div><!-- #content-## -->
+</div>
+</div>
+</div>
+</div><!-- #admin-## -->
+
+{% end %}

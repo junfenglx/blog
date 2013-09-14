@@ -1,0 +1,72 @@
+{% extends "adminlayout.html" %}
+{% block title %}
+Comments
+{% end %}
+{% block content %}
+<h4> Comments </h4>
+<div id="comment_status">{{ status }}</div>
+{% if comments %}
+<table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Author</th>
+                  <th>Email</th>
+                  <th style="width:300px;">Content</th>
+                  <th>Date</th>
+                  <th>IP</th>
+                  <th>User-Agent</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for c in comments %}
+                <tr>
+                <td>{% if comment_status["approved"]==c["comment_status"] %}<a href="/archives/{{ c["comment_post_id"] }}#comment-{{ c["comment_id"] }}">{{ c["comment_id"] }}</a>{% else %}{{ c["comment_id"] }}{% end %}</td>
+                  <td>{% if c["comment_author_url"] %}<a href="{{ c["comment_author_url"] }}" tagget="blank">{{ c["comment_author"] }}</a>{% else %}{{ c["comment_author"] }}{% end %}</td>
+                  <td>{{ c["comment_author_email"] }}</td>
+                  <td>
+                      {{ c["comment_content"] }}<br/><br/>
+                     
+                            {% for k in comment_status.keys() %}
+                            {% if comment_status[k]!=c["comment_status"] %}
+                            <div class="comment_status">
+                             <form action="/list/comment" method="post">
+                                   <button class="btn btn-warning" type="submit">{{ k }}</button>
+                                   <input type="hidden" name="action" value="{{ k }}">
+                                   {% module xsrf_form_html() %}
+                                   <input type="hidden" name="comment" value="{{ c["comment_id"] }}">
+                                   <input type="hidden" name="post" value="{{ c["comment_post_id"] }}">
+                                   </form>
+                                   </div>
+                                   
+                                   {% end %}
+                                   {% end %}
+                                   
+                                   
+                            
+                  </td>
+                  <td>{{ c["comment_date"] }}</td>
+                  <td>{{ c["comment_author_ip"] }}</td>
+                  <td>{{ c["comment_agent"] }}</td>
+                </tr>
+                {% end %}
+              </tbody>
+            </table>
+            {% if comment_count%10==0 %}
+            {% set page_count=comment_count/10 %}
+            {% else %}
+            {% set page_count=comment_count/10+1 %}
+            {% end %}
+    <div class="tablenav-pages"><span class="displaying-num">{{ comment_count }} items</span>
+<span class="pagination-links">
+<a class="first-page" title="Go to the first page" href="/list/comment?comment_status={{ status }}">«</a>
+<a class="prev-page" title="Go to the previous page" href="/list/comment?comment_status={{ status }}&paged={% if p>1 %}{{ p-1 }}{% else %}1{% end %}">‹</a>
+<span class="paging-input">{{ p }} of <span class="total-pages">{{ page_count }}</span></span>
+<a class="next-page" title="Go to the next page" href="/list/comment?comment_status={{ status }}&paged={% if p<page_count %}{{ p+1 }}{% else %}{{ page_count }}{% end %}">›</a>
+<a class="last-page" title="Go to the last page" href="/list/comment?comment_status={{ status }}&paged={{ page_count }}">»</a></span></div>        
+
+{% else %}
+<p>No {{ status }} comment </p>
+{% end %}
+
+{% end %}

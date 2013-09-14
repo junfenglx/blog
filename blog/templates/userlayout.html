@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ static_url("user.css") }}" type="text/css"/>
+<style type="text/css" id="custom-background-css">
+body.custom-background { background-color: #e6e6e6; }
+</style>
+{% end %}
+
+{% block page %}
+{% if pages %}
+      {% for page in pages %}
+          <li><a href="/page?name={{ page["title"] }}"> {{ page["title"] }} </a></li>
+      {% end %}
+{% end %}
+{% end %}
+
+{% block body %}
+<div id="page" class="hfeed site">
+<header id="masthead" class="site-header" role="banner">
+<hgroup>
+	<h1 class="site-title"><a href="/" title="algu.me" rel="home">algu.me</a></h1>
+	<h2 class="site-description">I Will Die But I Have Been To</h2>
+</hgroup>
+</header>
+<!-- #masthead -->
+<div id="main" class="wrapper">
+<div id="primary" class="site-content">
+<div id="content" role="main">
+{% block main %}
+{% end %}
+</div>
+</div>
+<!-- #primary -->
+<div id="secondary" class="widget-area" role="complementary">
+
+<aside id="search-2" class="widget widget_search">
+    <form role="search" method="get" id="searchform" action="/search">
+	<div><label class="screen-reader-text" for="s">Search for:</label>
+	<input type="text" value="" name="s" id="s">
+	<input type="submit" id="searchsubmit" value="Search">
+	</div>
+	</form></aside>
+
+<aside id="rss-3" class="widget widget_rss">
+    <h3 class="widget-title">
+        <a class="rsswidget" href="/rss2" title="Syndicate this content">
+        <img style="border:0" width="14" height="14" src="{{static_url("img/rss.png")}}" alt="RSS"></a>
+        <a class="rsswidget" href="/" title="I Will Die But I Have Been To">algu.me</a></h3>
+        {% if recent_entries %}
+        <ul>
+        {% for re in recent_entries %}
+        <li><a class="rsswidget" href="/archives/{{ re["post_id"] }}" title="{{ re["title"] }}">{{ re["title"] }}</a></li>
+        {% end %}
+        </ul>
+        {% end %}
+</aside>
+
+<aside id="recent-comments-2" class="widget widget_recent_comments">
+    <h3 class="widget-title">Recent Comments</h3>
+    {% if recent_comments %}
+    <ul id="recentcomments">
+    {% for rc in recent_comments %}
+        <li class="recentcomments">{{ rc["comment_author"] }} <a href="/archives/{{ rc["post_id"] }}#comment-{{ rc["comment_id"] }}">{{ rc["title"] }}</a></li>
+        {% end %}
+        </ul>
+        {% end %}
+    </aside>
+    
+    <aside id="categories-2" class="widget widget_categories">
+    <h3 class="widget-title">Categories</h3>
+    {% if categories %}		
+    <ul>
+    {% for cg in categories %}
+	<li class="cat-item cat-item-{{ cg["category_id"] }}"><a href="/category?name={{ cg["category_name"] }}" title="View all posts filed under {{ cg["category_name"] }}">{{ cg["category_name"] }}</a></li>
+	{% end %}
+	</ul>
+	{% end %}
+</aside>
+
+<aside id="tag_cloud-2" class="widget widget_tag_cloud">
+    <h3 class="widget-title">Tags</h3>
+   {% if tags %}
+    <div class="tagcloud">
+    {% for t in tags %}
+    <a href="/tag?name={{ t["tag_name"] }}" class="tag-link-{{ t["tag_id"] }}" title="{{ t["tag_count"] }} topic" style="font-size: {{ t["tag_count"]*8 }}pt;"><button class="btn btn-info">{{ t["tag_name"] }}</button></a>
+      {% end %}
+	</div>
+      {% end %}
+</aside>
+
+{% if htmls %}
+{% for h in htmls %}
+<aside id="text-{{ h["id"] }}" class="widget widget_text">
+    <div class="textwidget">
+    {% raw h["content"] %}
+      </div>
+</aside>
+{% end %}
+{% end %}
+</div>
+<!-- #secondary -->
+</div>
+<!-- #main .wrapper -->
+<footer id="colophon" role="contentinfo" >
+    <div class="site-info">
+	© 2013  algu.me powered by <a href="http://www.tornadoweb.org/" target="_blank">Tornado Web Server.</a></li>
+	Designed By Algu Modify From  <a href="http://wordpress.org/" target="_blank">Twenty Twelve.</a>
+	<a href="#masthead" class="back-to-top">Back to Top</a>
+    </div>
+</footer>
+<!-- #colophon -->
+</div>
+{% end %}

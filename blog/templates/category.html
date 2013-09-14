@@ -1,0 +1,14 @@
+{% extends "userlayout.html" %}
+{% block title %}Category:{{ category_name }}{% end %}
+{% block main %}
+<header class="archive-header">
+    <h1 class="archive-title">Category: <span>{{ category_name }}</span></h1>
+</header>
+{% if category_entries %}
+{% for ce in category_entries %}
+<li><a class="category_url" href="/archives/{{ ce["post_id"] }}" title="{{ ce["title"] }}">{{ ce["title"] }}</a></li>
+{% end %}
+{% else %}
+<p>No post</p>
+{% end %}
+{% end %}
