@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #!---coding=utf8---
+#
 
 from tornado.web import authenticated
 from BaseHandler import BaseHandler,role
