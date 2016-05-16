@@ -1,4 +1,4 @@
 blog
 ====
 
-My blog using Tornado Web Server
+A blog program using Tornado Web Server
